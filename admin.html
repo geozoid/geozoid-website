@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin — Geozoid Blog Manager</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.bunny.net/css?family=inter:400,500,600,700|space-grotesk:600,700&display=swap">
+  <style>
+    :root { --navy:#1E3A8A; --navy-dark:#172554; --orange:#F97316; --bg:#F1F5F9; --surface:#fff; --ink:#0F172A; --ink-soft:#475569; --border:#E2E8F0; --radius:14px; --radius-sm:10px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; min-height: 100vh; }
+    button, input, textarea { font-family: inherit; }
+    button { cursor: pointer; border: none; }
+
+    /* Login */
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #1E3A8A 0%, #172554 100%); }
+    .login-box { background: var(--surface); border-radius: var(--radius); padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 24px 48px rgba(0,0,0,0.2); }
+    .login-box h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; margin-bottom: 8px; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+    .login-box p { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 28px; }
+    .login-box input { width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; margin-bottom: 16px; transition: border-color 0.2s; }
+    .login-box input:focus { outline: none; border-color: var(--navy); }
+    .login-error { color: #dc2626; font-size: 0.85rem; margin-bottom: 12px; min-height: 20px; }
+
+    /* Admin header */
+    .admin-header { background: var(--navy); color: #fff; padding: 16px 5%; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .admin-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+    .admin-header .user-info { font-size: 0.85rem; opacity: 0.9; display: flex; align-items: center; gap: 6px; margin-right: 12px; }
+    .admin-header .actions { display: flex; gap: 10px; align-items: center; }
+    .admin-header button { padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; background: rgba(255,255,255,0.15); color: #fff; transition: background 0.2s; }
+    .admin-header button:hover { background: rgba(255,255,255,0.25); }
+    .admin-header .logout-btn { background: var(--orange); }
+    .admin-header .logout-btn:hover { background: #EA580C; }
+
+    .admin-main { max-width: 1100px; margin: 0 auto; padding: 40px 5%; }
+    .admin-tabs { display: flex; gap: 4px; margin-bottom: 28px; background: var(--surface); padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--border); width: fit-content; }
+    .admin-tabs button { padding: 10px 22px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; color: var(--ink-soft); background: transparent; transition: all 0.2s; }
+    .admin-tabs button.active { background: var(--navy); color: #fff; }
+
+    .panel { background: var(--surface); border-radius: var(--radius); padding: 32px; border: 1px solid var(--border); }
+    .panel h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; margin-bottom: 24px; color: var(--ink); }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+    .form-group label span { color: var(--ink-soft); font-weight: 400; }
+    .form-group input[type="text"], .form-group input[type="url"], .form-group textarea {
+      width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm);
+      font-size: 0.95rem; transition: border-color 0.2s; background: #fff;
+    }
+    .form-group textarea { resize: vertical; min-height: 220px; line-height: 1.7; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--navy); }
+
+    .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .checkbox-row input { width: 18px; height: 18px; accent-color: var(--navy); }
+    .checkbox-row label { font-size: 0.9rem; margin: 0; cursor: pointer; }
+
+    .form-actions { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+    .btn-primary { background: var(--navy); color: #fff; padding: 12px 28px; border-radius: 50px; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--orange); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-secondary { background: transparent; color: var(--ink-soft); padding: 12px 20px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; border: 2px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+
+    .status-msg { font-size: 0.88rem; padding: 10px 16px; border-radius: 8px; margin-bottom: 16px; display: none; }
+    .status-msg.show { display: block; }
+    .status-msg.success { background: #dcfce7; color: #166534; }
+    .status-msg.error { background: #fee2e2; color: #991b1b; }
+
+    .blog-list { list-style: none; }
+    .blog-list-item { display: flex; gap: 16px; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; align-items: flex-start; transition: box-shadow 0.2s; }
+    .blog-list-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .blog-list-thumb { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; background: var(--bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-soft); }
+    .blog-list-info { flex-grow: 1; min-width: 0; }
+    .blog-list-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; margin-bottom: 4px; color: var(--ink); word-wrap: break-word; }
+    .blog-list-meta { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 6px; }
+    .blog-list-excerpt { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .blog-list-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .blog-list-actions button { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all 0.2s; }
+    .blog-list-actions .edit-btn { background: #dbeafe; color: #1e40af; }
+    .blog-list-actions .edit-btn:hover { background: #1e40af; color: #fff; }
+    .blog-list-actions .delete-btn { background: #fee2e2; color: #991b1b; }
+    .blog-list-actions .delete-btn:hover { background: #991b1b; color: #fff; }
+    .blog-list-actions .publish-btn { background: #fef3c7; color: #92400e; }
+    .blog-list-actions .publish-btn:hover { background: #92400e; color: #fff; }
+    .blog-list-actions .publish-btn.published { background: #dcfce7; color: #166534; }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--ink-soft); }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.4; }
+
+    .tag { display: inline-block; padding: 2px 10px; border-radius: 50px; font-size: 0.72rem; font-weight: 600; }
+    .tag-published { background: #dcfce7; color: #166534; }
+    .tag-draft { background: #fef3c7; color: #92400e; }
+
+    @media (max-width: 640px) {
+      .panel { padding: 24px 20px; }
+      .blog-list-item { flex-direction: column; }
+      .blog-list-actions { align-self: flex-end; }
+      .admin-header { flex-wrap: wrap; gap: 12px; }
+      .admin-header .user-info { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-wrap" id="loginWrap">
+    <div class="login-box">
+      <h1><i class="fas fa-lock"></i> Admin Login</h1>
+      <p>Sign in with your admin email and password.</p>
+      <div class="login-error" id="loginError"></div>
+      <input type="email" id="emailInput" placeholder="Email address" autocomplete="username">
+      <input type="password" id="passwordInput" placeholder="Password" autocomplete="current-password">
+      <button class="btn-primary" id="loginBtn" style="width:100%;">Sign In</button>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL (hidden until login) -->
+  <div id="adminPanel" style="display:none;">
+    <div class="admin-header">
+      <h1><i class="fas fa-edit"></i> Geozoid Blog Manager</h1>
+      <div class="actions">
+        <span class="user-info"><i class="fas fa-user-circle"></i> <span id="userEmailDisplay"></span></span>
+        <a href="index.html" target="_blank" style="color:inherit;text-decoration:none;"><button><i class="fas fa-external-link-alt"></i> View Site</button></a>
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </div>
+
+    <div class="admin-main">
+      <div class="admin-tabs">
+        <button class="active" data-tab="list"><i class="fas fa-list"></i> All Posts</button>
+        <button data-tab="create"><i class="fas fa-plus"></i> New Post</button>
+      </div>
+
+      <!-- LIST TAB -->
+      <div class="panel" id="tabList">
+        <h2>All Blog Posts</h2>
+        <div class="status-msg" id="listStatus"></div>
+        <div id="blogListContainer">
+          <div class="empty-state"><i class="fas fa-circle-notch fa-spin"></i><p>Loading…</p></div>
+        </div>
+      </div>
+
+      <!-- CREATE/EDIT TAB -->
+      <div class="panel" id="tabCreate" style="display:none;">
+        <h2 id="formTitle">Create New Post</h2>
+        <div class="status-msg" id="formStatus"></div>
+        <form id="blogForm">
+          <input type="hidden" id="editId" value="">
+          <div class="form-group">
+            <label>Title *</label>
+            <input type="text" id="blogTitle" required placeholder="Enter blog title">
+          </div>
+          <div class="form-group">
+            <label>Cover Image URL <span>(optional)</span></label>
+            <input type="url" id="blogCover" placeholder="https://example.com/image.jpg">
+          </div>
+          <div class="form-group">
+            <label>Excerpt <span>(optional — short summary shown on cards)</span></label>
+            <input type="text" id="blogExcerpt" placeholder="A brief summary of the post" maxlength="200">
+          </div>
+          <div class="form-group">
+            <label>Content * <span>(plain text — line breaks are preserved)</span></label>
+            <textarea id="blogContent" required placeholder="Write your blog content here...
+
+You can use plain text. Line breaks will be preserved when displayed on the site."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Author <span>(optional)</span></label>
+            <input type="text" id="blogAuthor" placeholder="Geozoid Surveyors">
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="blogPublished" checked>
+            <label for="blogPublished">Publish immediately (uncheck to save as draft)</label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="submitBtn"><i class="fas fa-save"></i> Save Post</button>
+            <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+  (function() {
+    'use strict';
+
+    // ============================================================
+    // SUPABASE CONFIG
+    // ============================================================
+    var SUPABASE_URL = 'https://yvdgkjgrkjjujqbmrlka.supabase.co';
+    var SUPABASE_ANON_KEY = 'sb_publishable_y8ghfpAXLwbhTssB93vltQ_yEPjXsM4';
+
+    // Initialize Supabase client
+    var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        storageKey: 'gz-admin-session'
+      }
+    });
+
+    var $ = function(id) { return document.getElementById(id); };
+    var loginWrap = $('loginWrap');
+    var adminPanel = $('adminPanel');
+    var loginBtn = $('loginBtn');
+    var emailInput = $('emailInput');
+    var passwordInput = $('passwordInput');
+    var loginError = $('loginError');
+    var logoutBtn = $('logoutBtn');
+    var userEmailDisplay = $('userEmailDisplay');
+
+    // ---------- AUTH STATE ----------
+    function showAdmin(session) {
+      loginWrap.style.display = 'none';
+      adminPanel.style.display = 'block';
+      userEmailDisplay.textContent = session.user.email || '';
+      loadBlogs();
+    }
+    function showLogin() {
+      loginWrap.style.display = 'flex';
+      adminPanel.style.display = 'none';
+      passwordInput.value = '';
+    }
+
+    // Check current session on page load
+    supabase.auth.getSession().then(function(res) {
+      if (res.data && res.data.session) {
+        showAdmin(res.data.session);
+      } else {
+        showLogin();
+      }
+    });
+
+    // Listen to auth changes (login, logout, token refresh)
+    supabase.auth.onAuthStateChange(function(event, session) {
+      if (session) {
+        showAdmin(session);
+      } else {
+        showLogin();
+      }
+    });
+
+    // ---------- LOGIN ----------
+    loginBtn.addEventListener('click', function() {
+      var email = emailInput.value.trim();
+      var password = passwordInput.value;
+      if (!email || !password) {
+        loginError.textContent = 'Please enter both email and password.';
+        return;
+      }
+      loginError.textContent = '';
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Signing in…';
+
+      supabase.auth.signInWithPassword({ email: email, password: password })
+        .then(function(res) {
+          if (res.error) {
+            loginError.textContent = res.error.message || 'Login failed. Check your credentials.';
+          } else {
+            // onAuthStateChange will handle the UI switch
+            passwordInput.value = '';
+          }
+        })
+        .catch(function(err) {
+          loginError.textContent = 'Network error. Please try again.';
+        })
+        .finally(function() {
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = 'Sign In';
+        });
+    });
+
+    passwordInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') loginBtn.click(); });
+    emailInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') passwordInput.focus(); });
+
+    // ---------- LOGOUT ----------
+    logoutBtn.addEventListener('click', function() {
+      if (!confirm('Log out of the admin panel?')) return;
+      supabase.auth.signOut().then(function() {
+        // onAuthStateChange will handle UI switch
+      });
+    });
+
+    // ---------- Tabs ----------
+    document.querySelectorAll('.admin-tabs button').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var tab = this.getAttribute('data-tab');
+        document.querySelectorAll('.admin-tabs button').forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        $('tabList').style.display = tab === 'list' ? 'block' : 'none';
+        $('tabCreate').style.display = tab === 'create' ? 'block' : 'none';
+        if (tab === 'create') resetForm();
+      });
+    });
+
+    function showStatus(el, msg, type) {
+      el.textContent = msg;
+      el.className = 'status-msg show ' + type;
+      if (type === 'success') setTimeout(function() { el.classList.remove('show'); }, 4000);
+    }
+
+    function slugify(str) {
+      return str.toLowerCase().trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .substring(0, 80) + '-' + Date.now().toString(36);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function formatDate(iso) {
+      var d = new Date(iso);
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    // Get current session token for authenticated requests
+    function getAuthHeaders() {
+      return supabase.auth.getSession().then(function(res) {
+        var token = (res.data && res.data.session && res.data.session.access_token) || SUPABASE_ANON_KEY;
+        return {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        };
+      });
+    }
+
+    var allBlogs = [];
+
+    // ---------- LOAD BLOGS (admin — sees all including drafts) ----------
+    function loadBlogs() {
+      var container = $('blogListContainer');
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-circle-notch fa-spin"></i><p>Loading…</p></div>';
+
+      getAuthHeaders().then(function(headers) {
+        return fetch(SUPABASE_URL + '/rest/v1/blogs?select=*&order=created_at.desc', { headers: headers });
+      })
+      .then(function(r) {
+        if (!r.ok) return r.text().then(function(t) { throw new Error(t); });
+        return r.json();
+      })
+      .then(function(data) {
+        allBlogs = data || [];
+        renderBlogList();
+      })
+      .catch(function(err) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load posts. ' + escapeHtml(String(err.message || err)) + '</p></div>';
+      });
+    }
+
+    function renderBlogList() {
+      var container = $('blogListContainer');
+      if (allBlogs.length === 0) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-newspaper"></i><p>No blog posts yet. Click "New Post" to write your first one.</p></div>';
+        return;
+      }
+      var html = '<ul class="blog-list">';
+      allBlogs.forEach(function(b) {
+        var thumb = b.cover_image
+          ? '<img class="blog-list-thumb" src="' + escapeHtml(b.cover_image) + '" alt="" onerror="this.outerHTML=\'<div class=&quot;blog-list-thumb&quot;><i class=&quot;fas fa-image&quot;></i></div>\';">'
+          : '<div class="blog-list-thumb"><i class="fas fa-image"></i></div>';
+        var tag = b.published
+          ? '<span class="tag tag-published">Published</span>'
+          : '<span class="tag tag-draft">Draft</span>';
+        var excerpt = b.excerpt || (b.content ? b.content.substring(0, 120) + '…' : '');
+        html += '<li class="blog-list-item" data-id="' + b.id + '">'
+          + thumb
+          + '<div class="blog-list-info">'
+          + '<div class="blog-list-title">' + escapeHtml(b.title) + '</div>'
+          + '<div class="blog-list-meta">' + formatDate(b.created_at) + ' &middot; ' + tag + '</div>'
+          + '<div class="blog-list-excerpt">' + escapeHtml(excerpt) + '</div>'
+          + '</div>'
+          + '<div class="blog-list-actions">'
+          + '<button class="publish-btn ' + (b.published ? 'published' : '') + '" title="Toggle published" data-action="toggle"><i class="fas fa-' + (b.published ? 'eye' : 'eye-slash') + '"></i></button>'
+          + '<button class="edit-btn" title="Edit" data-action="edit"><i class="fas fa-pen"></i></button>'
+          + '<button class="delete-btn" title="Delete" data-action="delete"><i class="fas fa-trash"></i></button>'
+          + '</div></li>';
+      });
+      html += '</ul>';
+      container.innerHTML = html;
+
+      container.querySelectorAll('[data-action]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var action = this.getAttribute('data-action');
+          var id = this.closest('.blog-list-item').getAttribute('data-id');
+          var blog = allBlogs.find(function(b) { return String(b.id) === String(id); });
+          if (!blog) return;
+          if (action === 'edit') editBlog(blog);
+          else if (action === 'delete') deleteBlog(blog);
+          else if (action === 'toggle') togglePublish(blog);
+        });
+      });
+    }
+
+    var blogForm = $('blogForm');
+    var submitBtn = $('submitBtn');
+
+    function resetForm() {
+      $('editId').value = '';
+      $('blogTitle').value = '';
+      $('blogCover').value = '';
+      $('blogExcerpt').value = '';
+      $('blogContent').value = '';
+      $('blogAuthor').value = '';
+      $('blogPublished').checked = true;
+      $('formTitle').textContent = 'Create New Post';
+      submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Post';
+      $('formStatus').classList.remove('show');
+    }
+
+    function editBlog(blog) {
+      document.querySelector('.admin-tabs button[data-tab="create"]').click();
+      $('editId').value = blog.id;
+      $('blogTitle').value = blog.title || '';
+      $('blogCover').value = blog.cover_image || '';
+      $('blogExcerpt').value = blog.excerpt || '';
+      $('blogContent').value = blog.content || '';
+      $('blogAuthor').value = blog.author || '';
+      $('blogPublished').checked = blog.published !== false;
+      $('formTitle').textContent = 'Edit Post';
+      submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Post';
+    }
+
+    $('cancelBtn').addEventListener('click', function() {
+      document.querySelector('.admin-tabs button[data-tab="list"]').click();
+    });
+
+    // ---------- CREATE / UPDATE ----------
+    blogForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var id = $('editId').value;
+      var title = $('blogTitle').value.trim();
+      var content = $('blogContent').value.trim();
+      if (!title || !content) return;
+
+      var payload = {
+        title: title,
+        content: content,
+        excerpt: $('blogExcerpt').value.trim() || content.substring(0, 150),
+        cover_image: $('blogCover').value.trim() || null,
+        author: $('blogAuthor').value.trim() || 'Geozoid Surveyors',
+        published: $('blogPublished').checked
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving…';
+
+      var url, method;
+      if (id) {
+        url = SUPABASE_URL + '/rest/v1/blogs?id=eq.' + id;
+        method = 'PATCH';
+      } else {
+        payload.slug = slugify(title);
+        url = SUPABASE_URL + '/rest/v1/blogs';
+        method = 'POST';
+      }
+
+      getAuthHeaders().then(function(headers) {
+        return fetch(url, { method: method, headers: headers, body: JSON.stringify(payload) });
+      })
+      .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error(t); }); return r.json(); })
+      .then(function() {
+        showStatus($('formStatus'), id ? 'Post updated successfully!' : 'Post created successfully!', 'success');
+        setTimeout(function() {
+          document.querySelector('.admin-tabs button[data-tab="list"]').click();
+          loadBlogs();
+        }, 900);
+      })
+      .catch(function(err) {
+        showStatus($('formStatus'), 'Error saving post: ' + err.message, 'error');
+      })
+      .finally(function() {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = id ? '<i class="fas fa-save"></i> Update Post' : '<i class="fas fa-save"></i> Save Post';
+      });
+    });
+
+    // ---------- DELETE ----------
+    function deleteBlog(blog) {
+      if (!confirm('Delete "' + blog.title + '"? This cannot be undone.')) return;
+      getAuthHeaders().then(function(headers) {
+        return fetch(SUPABASE_URL + '/rest/v1/blogs?id=eq.' + blog.id, { method: 'DELETE', headers: headers });
+      })
+      .then(function(r) { if (!r.ok) throw new Error('Failed'); return loadBlogs(); })
+      .then(function() { showStatus($('listStatus'), 'Post deleted.', 'success'); })
+      .catch(function() { showStatus($('listStatus'), 'Failed to delete post.', 'error'); });
+    }
+
+    // ---------- TOGGLE PUBLISH ----------
+    function togglePublish(blog) {
+      var newState = !blog.published;
+      getAuthHeaders().then(function(headers) {
+        return fetch(SUPABASE_URL + '/rest/v1/blogs?id=eq.' + blog.id, {
+          method: 'PATCH', headers: headers,
+          body: JSON.stringify({ published: newState })
+        });
+      })
+      .then(function(r) { if (!r.ok) throw new Error('Failed'); return loadBlogs(); })
+      .then(function() { showStatus($('listStatus'), newState ? 'Post published.' : 'Post moved to drafts.', 'success'); })
+      .catch(function() { showStatus($('listStatus'), 'Failed to update.', 'error'); });
+    }
+  })();
+  </script>
+</body>
+</html>
