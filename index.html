@@ -162,19 +162,80 @@
     .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 16px; }
     .section-desc { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.7; }
 
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .service-item { padding: 32px 28px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: all 0.3s var(--ease); position: relative; overflow: hidden; display: flex; flex-direction: column; }
-    .service-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease-out); }
-    .service-item:hover { border-color: transparent; box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    /* ===== SERVICES ===== */
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .service-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all 0.3s var(--ease);
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .service-item::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--orange); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease-out); z-index: 2;
+    }
+    .service-item:hover {
+      border-color: transparent;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+    }
     .service-item:hover::before { transform: scaleX(1); }
-    .service-num { font-family: var(--font-display); font-size: 0.8rem; font-weight: 600; color: var(--ink-muted); margin-bottom: 20px; letter-spacing: 0.05em; }
-    .service-icon { width: 52px; height: 52px; border-radius: 14px; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 22px; transition: all 0.3s var(--ease); overflow: hidden; flex-shrink: 0; }
-    .service-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; transition: transform 0.4s var(--ease-out); }
-    .service-item:hover .service-icon { background: var(--orange); transform: rotate(-6deg) scale(1.05); }
-    .service-item:hover .service-icon img { transform: scale(1.1); }
-    .service-item h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
-    .service-item p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 20px; flex-grow: 1; }
-    .service-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 600; color: var(--navy); transition: gap 0.2s; }
+
+    /* Large image banner */
+    .service-image {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .service-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease-out);
+    }
+    .service-item:hover .service-image img { transform: scale(1.08); }
+    .service-image-fallback {
+      color: rgba(255,255,255,0.6);
+      font-size: 3.5rem;
+    }
+
+    /* Service body content */
+    .service-body {
+      padding: 28px 26px 26px;
+      display: flex; flex-direction: column;
+      flex-grow: 1;
+      position: relative;
+    }
+    .service-num {
+      position: absolute; top: -20px; right: 22px;
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--orange); color: #fff;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 16px rgba(249,115,22,0.35);
+      z-index: 3;
+    }
+    .service-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem; font-weight: 600;
+      color: var(--ink); margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .service-body p {
+      font-size: 0.92rem; color: var(--ink-soft);
+      line-height: 1.65; margin-bottom: 20px; flex-grow: 1;
+    }
+    .service-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--navy); transition: gap 0.2s;
+    }
     [data-theme="dark"] .service-link { color: var(--orange); }
     .service-link:hover { gap: 10px; color: var(--orange); }
 
@@ -314,6 +375,7 @@
       .hero-card-float.card-a { top: 12px; right: 12px; max-width: 180px; }
       .hero-card-float.card-b { bottom: 12px; left: 12px; max-width: 200px; }
       .services-grid, .projects-grid, .testimonials-grid, .blog-grid { grid-template-columns: 1fr; }
+      .service-image { height: 200px; }
       .split-visual img { height: 300px; }
       .cta-banner { padding: 40px 28px; }
       .btn { width: 100%; justify-content: center; }
@@ -447,46 +509,75 @@
         </div>
         <div class="services-grid">
           <article class="service-item">
-            <div class="service-num">01</div>
-            <div class="service-icon"><img src="https://geozoid.co.ke/images/topo.jpg" alt="Topographical Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-mountain\'></i>';"></div>
-            <h3>Topographical Survey</h3>
-            <p>Detailed mapping of natural and man-made features for planning, design, and development projects.</p>
-            <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            <div class="service-image">
+              <img src="https://geozoid.co.ke/images/topo.jpg" alt="Topographical Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;service-image-fallback&quot;><i class=&quot;fas fa-mountain&quot;></i></div>';">
+            </div>
+            <div class="service-body">
+              <div class="service-num">01</div>
+              <h3>Topographical Survey</h3>
+              <p>Detailed mapping of natural and man-made features for planning, design, and development projects.</p>
+              <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            </div>
           </article>
+
           <article class="service-item">
-            <div class="service-num">02</div>
-            <div class="service-icon"><img src="https://geozoid.co.ke/images/TITLE DEED PROCESSING.jpg" alt="Title Deed Processing" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-file-signature\'></i>';"></div>
-            <h3>Title Deed Processing</h3>
-            <p>End-to-end support for land registration, title deed acquisition, and documentation processing.</p>
-            <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            <div class="service-image">
+              <img src="https://geozoid.co.ke/images/TITLE DEED PROCESSING.jpg" alt="Title Deed Processing" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;service-image-fallback&quot;><i class=&quot;fas fa-file-signature&quot;></i></div>';">
+            </div>
+            <div class="service-body">
+              <div class="service-num">02</div>
+              <h3>Title Deed Processing</h3>
+              <p>End-to-end support for land registration, title deed acquisition, and documentation processing.</p>
+              <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            </div>
           </article>
+
           <article class="service-item">
-            <div class="service-num">03</div>
-            <div class="service-icon"><img src="https://geozoid.co.ke/images/ENGINEERING SURVEY V1.jpg" alt="Engineering Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-hard-hat\'></i>';"></div>
-            <h3>Engineering Survey</h3>
-            <p>Precision surveys for roads, buildings, and infrastructure — accurate, actionable data.</p>
-            <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            <div class="service-image">
+              <img src="https://geozoid.co.ke/images/ENGINEERING SURVEY V1.jpg" alt="Engineering Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;service-image-fallback&quot;><i class=&quot;fas fa-hard-hat&quot;></i></div>';">
+            </div>
+            <div class="service-body">
+              <div class="service-num">03</div>
+              <h3>Engineering Survey</h3>
+              <p>Precision surveys for roads, buildings, and infrastructure — accurate, actionable data.</p>
+              <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            </div>
           </article>
+
           <article class="service-item">
-            <div class="service-num">04</div>
-            <div class="service-icon"><img src="https://geozoid.co.ke/images/CADASTRAL SURVEY.jpg" alt="Cadastral Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-draw-polygon\'></i>';"></div>
-            <h3>Cadastral Survey</h3>
-            <p>Boundary determination, beacon placement, and land registration surveys.</p>
-            <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            <div class="service-image">
+              <img src="https://geozoid.co.ke/images/CADASTRAL SURVEY.jpg" alt="Cadastral Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;service-image-fallback&quot;><i class=&quot;fas fa-draw-polygon&quot;></i></div>';">
+            </div>
+            <div class="service-body">
+              <div class="service-num">04</div>
+              <h3>Cadastral Survey</h3>
+              <p>Boundary determination, beacon placement, and land registration surveys.</p>
+              <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            </div>
           </article>
+
           <article class="service-item">
-            <div class="service-num">05</div>
-            <div class="service-icon"><img src="https://geozoid.co.ke/images/CADASTRAL SURVEY.jpg" alt="Mutation Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-exchange-alt\'></i>';"></div>
-            <h3>Mutation Survey</h3>
-            <p>Land mutation, subdivision, and amalgamation to update land registry records.</p>
-            <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            <div class="service-image">
+              <img src="https://geozoid.co.ke/images/CADASTRAL SURVEY.jpg" alt="Mutation Survey" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;service-image-fallback&quot;><i class=&quot;fas fa-exchange-alt&quot;></i></div>';">
+            </div>
+            <div class="service-body">
+              <div class="service-num">05</div>
+              <h3>Mutation Survey</h3>
+              <p>Land mutation, subdivision, and amalgamation to update land registry records.</p>
+              <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            </div>
           </article>
+
           <article class="service-item">
-            <div class="service-num">06</div>
-            <div class="service-icon"><img src="https://geozoid.co.ke/images/GIS MAPPING (2).png" alt="GIS Mapping" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-layer-group\'></i>';"></div>
-            <h3>GIS Mapping</h3>
-            <p>Geographic Information Systems mapping and spatial data analysis.</p>
-            <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            <div class="service-image">
+              <img src="https://geozoid.co.ke/images/GIS MAPPING (2).png" alt="GIS Mapping" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;service-image-fallback&quot;><i class=&quot;fas fa-layer-group&quot;></i></div>';">
+            </div>
+            <div class="service-body">
+              <div class="service-num">06</div>
+              <h3>GIS Mapping</h3>
+              <p>Geographic Information Systems mapping and spatial data analysis.</p>
+              <a href="#contact" class="service-link">Get a quote <i class="fas fa-arrow-right"></i></a>
+            </div>
           </article>
         </div>
       </div>
@@ -561,7 +652,7 @@
       </div>
     </section>
 
-    <!-- ===== BLOG SECTION (auto-populated from Supabase, no placeholder text) ===== -->
+    <!-- ===== BLOG SECTION ===== -->
     <section class="blog-section" id="blog">
       <div class="section-inner">
         <div class="section-head center">
