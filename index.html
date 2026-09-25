@@ -14,18 +14,29 @@
   <meta name="theme-color" content="#1E3A8A" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)">
 
-  <!-- ===== FAVICON (same logo used in header) ===== -->
+  <!-- ===== FAVICON (browser tab) ===== -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://geozoid.co.ke/images/geozoid-logo (2).png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://geozoid.co.ke/images/geozoid-logo (2).png">
   <link rel="apple-touch-icon" sizes="180x180" href="https://geozoid.co.ke/images/geozoid-logo (2).png">
-  <link rel="shortcut icon" href="https://geozoid.co.ke/images/geozoid-logo(2).png">
+  <link rel="shortcut icon" href="https://geozoid.co.ke/images/geozoid-logo (2).png">
 
+  
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "Organization",
+    "@id": "https://geozoidsurveyors.com/#organization",
     "name": "Geozoid Surveyors",
     "url": "https://geozoidsurveyors.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geozoid.co.ke/images/geozoid-logo (2).png",
+      "width": 512,
+      "height": 512,
+      "caption": "Geozoid Surveyors Logo"
+    },
+    "image": "https://geozoid.co.ke/images/geozoid-logo (2).png",
+    "description": "Registered land surveyors in Kenya offering cadastral, topographical, engineering surveys, GIS mapping, and land transactions.",
     "telephone": "+254742883330",
     "email": "geozoidsurveyors@gmail.com",
     "address": {
@@ -34,6 +45,56 @@
       "addressLocality": "Ruiru",
       "postalCode": "00232",
       "addressCountry": "KE"
+    },
+    "sameAs": [
+      "https://www.tiktok.com/@geozoidlandsurveyors",
+      "https://wa.me/254742883330"
+    ]
+  }
+  </script>
+
+  <!-- ===== LOCAL BUSINESS SCHEMA ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://geozoidsurveyors.com/#localbusiness",
+    "name": "Geozoid Surveyors",
+    "url": "https://geozoidsurveyors.com",
+    "logo": "https://geozoid.co.ke/images/geozoid-logo (2).png",
+    "image": "https://geozoid.co.ke/images/geozoid-logo (2).png",
+    "telephone": "+254742883330",
+    "email": "geozoidsurveyors@gmail.com",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rowini House, Room G15",
+      "addressLocality": "Ruiru",
+      "postalCode": "00232",
+      "addressCountry": "KE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -1.131434,
+      "longitude": 36.982339
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Kenya"
+    }
+  }
+  </script>
+
+  <!-- ===== WEBSITE SCHEMA (with publisher logo) ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://geozoidsurveyors.com/#website",
+    "url": "https://geozoidsurveyors.com",
+    "name": "Geozoid Surveyors",
+    "publisher": {
+      "@id": "https://geozoidsurveyors.com/#organization"
     }
   }
   </script>
@@ -99,7 +160,6 @@
     [data-theme="dark"] header { background: rgba(30,41,59,0.85); }
     .nav-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 5%; gap: 20px; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    /* ===== Header logo uses the actual logo image (same as favicon) ===== */
     .brand-mark {
       width: 42px; height: 42px; border-radius: 10px;
       background: var(--surface);
@@ -197,7 +257,6 @@
     }
     .service-item:hover::before { transform: scaleX(1); }
 
-    /* Large image banner */
     .service-image {
       width: 100%;
       height: 180px;
@@ -217,7 +276,6 @@
       font-size: 3.5rem;
     }
 
-    /* Service body content */
     .service-body {
       padding: 28px 26px 26px;
       display: flex; flex-direction: column;
@@ -273,7 +331,6 @@
     .blog-loading i { font-size: 2rem; animation: spin 1s linear infinite; }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    /* Blog Modal */
     .blog-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 3000; opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease); display: flex; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
     .blog-modal-overlay.open { opacity: 1; pointer-events: auto; }
     .blog-modal { background: var(--surface); border-radius: var(--radius-lg); max-width: 780px; width: 100%; padding: 48px 44px; position: relative; box-shadow: var(--shadow-xl); transform: translateY(20px); transition: transform 0.3s var(--ease-out); margin: auto; }
@@ -413,7 +470,6 @@
   <header>
     <div class="nav-inner">
       <a href="#home" class="brand" aria-label="Geozoid Surveyors home">
-        <!-- ===== HEADER LOGO — same image as favicon ===== -->
         <div class="brand-mark" aria-hidden="true">
           <img src="https://geozoid.co.ke/images/geozoid-logo (2).png" alt="Geozoid Surveyors logo">
         </div>
@@ -672,7 +728,6 @@
       </div>
     </section>
 
-    <!-- ===== BLOG SECTION ===== -->
     <section class="blog-section" id="blog">
       <div class="section-inner">
         <div class="section-head center">
@@ -804,7 +859,6 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
-  <!-- Blog Modal -->
   <div class="blog-modal-overlay" id="blogModalOverlay">
     <div class="blog-modal" id="blogModal" role="dialog" aria-modal="true">
       <button class="blog-modal-close" id="blogModalClose" aria-label="Close"><i class="fas fa-times"></i></button>
@@ -820,13 +874,9 @@
   (function() {
     'use strict';
 
-    // ============================================================
-    // SUPABASE CONFIG
-    // ============================================================
     var SUPABASE_URL = 'https://yvdgkjgrkjjujqbmrlka.supabase.co';
     var SUPABASE_ANON_KEY = 'sb_publishable_y8ghfpAXLwbhTssB93vltQ_yEPjXsM4';
 
-    // ---------- Theme ----------
     var root = document.documentElement;
     var themeToggle = document.getElementById('themeToggle');
     function setThemeIcon(isDark) {
@@ -847,7 +897,6 @@
       setThemeIcon(!isDark);
     });
 
-    // ---------- Mobile drawer ----------
     var hamburger = document.getElementById('hamburger');
     var drawer = document.getElementById('mobileDrawer');
     var drawerClose = document.getElementById('drawerClose');
@@ -868,7 +917,6 @@
     drawer.querySelectorAll('a').forEach(function(l) { l.addEventListener('click', closeDrawer); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
 
-    // ---------- Smooth scroll ----------
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
       anchor.addEventListener('click', function(e) {
         var href = this.getAttribute('href');
@@ -881,7 +929,6 @@
       });
     });
 
-    // ---------- Counters ----------
     var counters = document.querySelectorAll('[data-count]');
     var counterObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
@@ -903,7 +950,6 @@
     }, { threshold: 0.4 });
     counters.forEach(function(c) { counterObserver.observe(c); });
 
-    // ---------- Scroll spy ----------
     var sections = document.querySelectorAll('main section[id]');
     var navLinks = document.querySelectorAll('.nav-links a');
     function updateActive() {
@@ -925,7 +971,6 @@
 
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ---------- Reveal ----------
     if ('IntersectionObserver' in window) {
       var revealObserver = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
@@ -944,9 +989,6 @@
       });
     }
 
-    // ============================================================
-    // BLOG — Fetch from Supabase
-    // ============================================================
     var blogGrid = document.getElementById('blogGrid');
 
     function escapeHtml(str) {
@@ -1008,7 +1050,6 @@
       });
     }
 
-    // ---------- Blog Modal ----------
     var blogModalOverlay = document.getElementById('blogModalOverlay');
     var blogModalClose = document.getElementById('blogModalClose');
     var blogModalDate = document.getElementById('blogModalDate');
