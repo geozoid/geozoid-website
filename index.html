@@ -13,11 +13,12 @@
   <link rel="canonical" href="https://geozoidsurveyors.com/">
   <meta name="theme-color" content="#1E3A8A" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)">
-  
-  <!-- ===== FAVICON ===== -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://geozoid.co.ke/images/geozoid-logo (2).png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://geozoid.co.ke/images/geozoid-logo (2).png">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://geozoid.co.ke/images/geozoid-logo (2).png">
+
+  <!-- ===== FAVICON (same logo used in header) ===== -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://geozoid.co.ke/images/geozoid-logo(2).png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://geozoid.co.ke/images/geozoid-logo(2).png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://geozoid.co.ke/images/geozoid-logo(2).png">
+  <link rel="shortcut icon" href="https://geozoid.co.ke/images/geozoid-logo(2).png">
 
   <script type="application/ld+json">
   {
@@ -98,9 +99,16 @@
     [data-theme="dark"] header { background: rgba(30,41,59,0.85); }
     .nav-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 5%; gap: 20px; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-mark { width: 42px; height: 42px; border-radius: 10px; background: var(--navy); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; transition: transform 0.3s var(--ease); }
-    .brand-mark::before { content: 'G'; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; color: #fff; position: relative; z-index: 1; }
-    .brand-mark::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--orange) 0%, var(--orange) 45%, transparent 45%); opacity: 0.9; }
+    /* ===== Header logo uses the actual logo image (same as favicon) ===== */
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0;
+      transition: transform 0.3s var(--ease);
+      border: 1px solid var(--border);
+    }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
     .brand-mark:hover { transform: rotate(-5deg) scale(1.05); }
     .brand-text { line-height: 1.1; }
     .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--ink); }
@@ -405,7 +413,10 @@
   <header>
     <div class="nav-inner">
       <a href="#home" class="brand" aria-label="Geozoid Surveyors home">
-        <div class="brand-mark" aria-hidden="true"></div>
+        <!-- ===== HEADER LOGO — same image as favicon ===== -->
+        <div class="brand-mark" aria-hidden="true">
+          <img src="https://geozoid.co.ke/images/geozoid-logo(2).png" alt="Geozoid Surveyors logo">
+        </div>
         <div class="brand-text">
           <div class="brand-name">Geo<em>zoid</em></div>
           <div class="brand-sub">Surveyors</div>
@@ -439,7 +450,9 @@
   <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
     <div class="drawer-head">
       <a href="#home" class="brand">
-        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-mark" aria-hidden="true">
+          <img src="https://geozoid.co.ke/images/geozoid-logo(2).png" alt="Geozoid Surveyors logo">
+        </div>
         <div class="brand-text">
           <div class="brand-name">Geo<em>zoid</em></div>
           <div class="brand-sub">Surveyors</div>
@@ -731,7 +744,9 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="#home" class="brand">
-            <div class="brand-mark" aria-hidden="true"></div>
+            <div class="brand-mark" aria-hidden="true">
+              <img src="https://geozoid.co.ke/images/geozoid-logo(2).png" alt="Geozoid Surveyors logo">
+            </div>
             <div class="brand-text">
               <div class="brand-name">Geo<em>zoid</em></div>
               <div class="brand-sub">Surveyors</div>
